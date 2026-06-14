@@ -1,0 +1,88 @@
+<script lang="ts">
+  import * as XLSX from 'xlsx';
+
+  let participants: any[] = [];
+  let hostels: any[] = [];
+  let results: any[] = [];
+
+  const handleFileUpload = async (e: Event, type: 'p' | 'h') => {
+    const file = (e.target as HTMLInputElement).files?.[0];
+    const data = await file?.arrayBuffer();
+    const workbook = XLSX.read(data);
+    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+    const json = XLSX.utils.sheet_to_json(sheet);
+    
+    if (type === 'p') participants = json;
+    else hostels = json;
+  };
+
+  const allocateRooms = () => {
+    let femaleRooms = hostels.filter(h => h['Hostel Type'] === 'Girls');
+    let maleRooms = hostels.filter(h => h['Hostel Type'] === 'Boys');
+    
+    results = participants.map(p => {
+      let roomPool = p.Gender === 'Female' ? femaleRooms : maleRooms;
+      let room = roomPool.find(r => (r.Capacity || 1) > (r.filled || 0));
+      
+      if (room) {
+        room.filled = (room.filled || 0) + 1;
+        return { ...p, 'Allotted Hostel': room['Hostel Name'], 'Room Number': room['Room Number'] };
+      }
+      return { ...p, 'Allotted Hostel': 'Waitlisted', 'Room Number': 'N/A' };
+    });
+  };
+
+  const downloadResults = () => {
+    const worksheet = XLSX.utils.json_to_sheet(results);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Allotment");
+    XLSX.writeFile(workbook, "Hackathon_Allotment.xlsx");
+  };
+</script>
+
+<main class="max-w-4xl mx-auto p-8 font-sans">
+  <h1 class="text-3xl font-bold mb-6 text-indigo-700">Hostel Allotment System</h1>
+  
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+    <div class="p-4 border-2 border-dashed border-gray-300 rounded-lg">
+      <label class="block font-semibold mb-2">Hostel Availability Sheet</label>
+      <input type="file" on:change={(e) => handleFileUpload(e, 'h')} accept=".xlsx" />
+    </div>
+    <div class="p-4 border-2 border-dashed border-gray-300 rounded-lg">
+      <label class="block font-semibold mb-2">Participant Sheet</label>
+      <input type="file" on:change={(e) => handleFileUpload(e, 'p')} accept=".xlsx" />
+    </div>
+  </div>
+
+  <button 
+    class="bg-indigo-600 text-white px-6 py-2 rounded shadow hover:bg-indigo-700 disabled:opacity-50"
+    on:click={allocateRooms}
+    disabled={!participants.length || !hostels.length}>
+    Run Allocation
+  </button>
+
+  {#if results.length > 0}
+    <div class="mt-8">
+      <button class="mb-4 text-green-600 underline" on:click={downloadResults}>Download Excel</button>
+      <div class="overflow-x-auto border rounded">
+        <table class="min-w-full text-left text-sm">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="p-2">Name</th><th class="p-2">Gender</th><th class="p-2">Hostel</th><th class="p-2">Room</th>
+            </tr>
+          </thead>
+          <tbody>
+            {#each results as row}
+              <tr class="border-t">
+                <td class="p-2">{row['Participant Name']}</td>
+                <td class="p-2">{row.Gender}</td>
+                <td class="p-2">{row['Allotted Hostel']}</td>
+                <td class="p-2">{row['Room Number']}</td>
+              </tr>
+            {/each}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {/if}
+</main>
