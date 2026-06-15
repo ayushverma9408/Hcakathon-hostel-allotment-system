@@ -15,6 +15,10 @@ Spreadsheet Engine: xlsx (SheetJS) for handling .xlsx and .csv files.
 
 State Management: Svelte stores for managing participant and hostel data during the session.
 
+
+<img width="514" height="389" alt="image" src="https://github.com/user-attachments/assets/05ab3e7a-f0a2-49e5-8a3b-b8bda26556fb" />
+
+
 2. Core Logic Implementation
 
 The allocation algorithm iterates through groups based on the Gender attribute and matches them to the corresponding Hostel Type.
@@ -30,12 +34,21 @@ The engine filters participants and rooms by gender. It then performs a sequenti
 $$\text{Allotment}(P_i) = R_j \iff \text{Gender}(P_i) = \text{Type}(R_j) \land \text{Occupancy}(R_j) < \text{Capacity}(R_j)$$
 where $P$ is the participant set and $R$ is the room set.
 
+
+<img width="1148" height="1751" alt="image" src="https://github.com/user-attachments/assets/2b501137-2464-481f-82dc-54cf5b2fa1a9" />
+
+<img width="2030" height="1406" alt="image" src="https://github.com/user-attachments/assets/e9c4fcb1-d822-4bc1-b59d-2beaa63f1b55" />
+
+
+
+
 3. Implementation Code (Svelte Component)
 
 The following snippet represents the logic within the main route +page.svelte.
 
-4. Key Features
 
+
+4. Key Features
 
 Dynamic Matching: The system automatically separates the participant pool by Gender and assigns them to the appropriate <keyword>Hostel Type</keyword>.
 
@@ -45,6 +58,7 @@ Waitlist Handling: If available rooms for a specific gender are exhausted, the p
 
 Instant Feedback: A preview table allows organizers to verify the allotment before generating the final OpenXML file.
 
+<img width="1280" height="720" alt="image" src="https://github.com/user-attachments/assets/8b6ebf7e-42f5-40c0-8f17-0fd3970fbe26" />
 
 
 FeatureImplementationSTATUS
