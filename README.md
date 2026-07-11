@@ -6,6 +6,7 @@ A modern, full-featured hostel allotment system built with **SvelteKit** that au
 
 ---
 
+
 ## ✨ Key Features
 
 - **Dynamic Gender-Based Matching** — Automatically separates participants by gender and assigns them to matching hostel types
