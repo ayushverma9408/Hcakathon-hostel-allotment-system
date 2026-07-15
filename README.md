@@ -1,6 +1,6 @@
 # HOSTEL ALLOTMENT SYSTEM
 
-A modern, full-featured hostel allotment system built with **SvelteKit** that automates the process of assigning participants to hostel rooms based on gender and capacity constraints. Upload participant and hostel data via Excel/CSV, and the system intelligently allocates rooms while managing capacity and generating a downloadable allocation report .
+A modern, full-featured hostel allotment system built with **SvelteKit** that automates the process of assigning participants to hostel rooms based on gender and capacity constraints. Upload participant and hostel data via Excel/CSV, and the system intelligently allocates rooms while managing capacity and generating a downloadable allocation report.
 
 <img width="1280" height="720" alt="image" src="https://github.com/user-attachments/assets/8b6ebf7e-42f5-40c0-8f17-0fd3970fbe26" />
 
